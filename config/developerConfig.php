@@ -4,7 +4,7 @@ const CONFIG_DATA_LAYER = [
     "driver" => "mysql",
     "host" => "localhost",
     "port" => "3306",
-    "dbname" => "fazendao_database",
+    "dbname" => "database",
     "username" => "root",
     "passwd" => "",
     "options" => [
@@ -19,7 +19,7 @@ const CONFIG_DATA_LAYER = [
 
 const CONFIG_DISPLAY_ERROR_DETAILS = true;
 
-const CONFIG_URL = "http://fazendao.localhost";
+const CONFIG_URL = "http://meusite.localhost";
 
 
 
