@@ -1,5 +1,5 @@
 <?php
-namespace src\lib;
+namespace App\Libs;
 
 
 class HttpClass

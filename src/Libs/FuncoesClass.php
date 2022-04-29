@@ -1,5 +1,5 @@
 <?php
-namespace src\lib;
+namespace App\Libs;
 
 use DateTime;
 use Firebase\JWT\JWT;
@@ -9,11 +9,16 @@ use ReCaptcha\ReCaptcha;
 
 
 /**
- * FUNÇÕES DO SISTEMA
+ * CLASSE DE FUNÇÕES GERAIS
  *
- * User: Bruno Morais
- * Date: 08/06/2017
- * Time: 09:53
+ *
+ * @author Bruno Morais <brunomoraisti@gmail.com>
+ * @version 3
+ * @date 18/09/2021
+ * @copyright GPL © 2021, bmorais.com
+ * @package php
+ * @subpackage class
+ * @access private
  */
 class FuncoesClass
 {
@@ -586,7 +591,7 @@ class FuncoesClass
      *
      * @return string
      */
-    function create_password_hash($strPassword, $numAlgo = 1, $arrOptions = array())
+    function create_password_hash($strPassword, $numAlgo = PASSWORD_DEFAULT, $arrOptions = array())
     {
         if (function_exists('password_hash')) {
             // php >= 5.5
@@ -985,6 +990,14 @@ class FuncoesClass
         return $retorno;
     }
 
+    static function inputGet($name){
+        return filter_input(INPUT_GET, $name, FILTER_SANITIZE_STRING);
+    }
+
+    static function inputPost($name){
+        return filter_input(INPUT_POST, $name, FILTER_SANITIZE_STRING);
+    }
+
     function base64ParaArquivo($textoBase64,$caminho){
         // SALVA ARQUIVO
         $arquivo = base64_decode($textoBase64);
@@ -1015,7 +1028,7 @@ class FuncoesClass
         return $nomeArquivo;
     }
 
-    function &arrayEmMinusculo(&$obj)
+    function &arrayEmMinusculo($obj)
     {
         $type = (int) is_object($obj) - (int) is_array($obj);
         if ($type === 0) return $obj;

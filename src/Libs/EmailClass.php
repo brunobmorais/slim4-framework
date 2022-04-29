@@ -1,5 +1,5 @@
 <?php
-namespace src\lib;
+namespace App\Libs;
 
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;

@@ -1,5 +1,5 @@
 <?php
-namespace src\lib;
+namespace App\Libs;
 
 use DateTimeImmutable;
 use Firebase\JWT\JWT;
@@ -152,9 +152,9 @@ class JwtTokenClass
 
     }
 
-    public function getBearerToken()
+    public static function getBearerToken()
     {
-        $headers = $this->getAuthorizationHeader();
+        $headers = self::getAuthorizationHeader();
         // HEADER: Get the access token from the header
         if (!empty($headers)) {
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
@@ -164,7 +164,7 @@ class JwtTokenClass
         return null;
     }
 
-    private function getAuthorizationHeader()
+    private static function getAuthorizationHeader()
     {
         $headers = null;
         if (isset($_SERVER['Authorization'])) {
