@@ -31,7 +31,7 @@ services:
       - mynet
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: intranet
+      MYSQL_DATABASE: database
       MYSQL_USER: info
       MYSQL_PASSWORD: info
   phpmyadmin:

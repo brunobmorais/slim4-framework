@@ -1,22 +1,18 @@
 <?php
 namespace App\Daos;
 
-use App\Libs\Database\Connect;
-use App\Libs\Database\Crud;
 use App\Libs\FuncoesClass;
 use App\Libs\JwtTokenClass;
 use App\Libs\UuidClass;
 use App\Models\UsuarioModel;
-use MongoDB\BSON\Binary;
-use mysql_xdevapi\Session;
-use Ramsey\Uuid\Exception\UnableToBuildUuidException;
+use BMorais\Database\Crud;
 
 class UsuarioDao extends Crud {
 
     public function __construct()
     {
-        $this->tableName = "USUARIO";
-        $this->classModel = "UsuarioModel";
+        $this->setTable("USUARIO");
+        $this->setClassModel("UsuarioModel");
     }
 
     public function insertUsuario($objJson = []):array{
@@ -39,7 +35,7 @@ class UsuarioDao extends Crud {
 
         if (!empty($nome) && !empty($email) && !empty($hash) && !empty($device)) {
             if (empty($this->select("EMAIL", "WHERE EMAIL=?", [$email]))) {
-                $this->startTransaction();
+                $this->beginTrasaction();
                 if ($usuarioDao->insert("CODUSUARIO, NOME, EMAIL, TELEFONE, SENHA, ULTIMOACESSO", [$codusuarioBin, $nome, $email, $telefone, $senha, $dataAtual])) {
 
                     $this->commitTransaction();
@@ -73,12 +69,12 @@ class UsuarioDao extends Crud {
         if (!empty($email) && !empty($senha)) {
             $senha = $funcoesClass->create_password_hash($senha);
             if (!empty($this->select("EMAIL", "WHERE EMAIL=?", [$email]))) {
-                $this->startTransaction();
+                $this->beginTrasaction();
                 if ($this->update(array("SENHA"), array($senha,$email), "EMAIL=?")) {
                     $this->commitTransaction();
                     return array("ERROR" => false, "MESSAGE" => "Alterado com sucesso", "CODE" => "2000");
                 } else {
-                    $this->cancelTransaction();
+                    $this->rollBackTransaction();
                     return array("ERROR" => true, "MESSAGE" => "Erro ao registrar nova senha");
                 }
             } else {
@@ -188,7 +184,7 @@ class UsuarioDao extends Crud {
                     FROM USUARIO AS U
                     WHERE U.CODUSUARIO=?";
         $result = $this->executeSQL($sql,[$codusuario]);
-        return $this->getObj($result);
+        return $this->fetchArrayObj($result);
 
     }
 

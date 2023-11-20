@@ -24,7 +24,7 @@ const CONFIG_SITE = [
     "phone" => "+55 63 3312-3333",
     "url" => "https://site.com",
     "domain" => "https://site.com",
-    "andress" => "Gurupi-TO",
+    "andress" => "Palmas-TO",
     "cnpj" => ""
 ];
 
