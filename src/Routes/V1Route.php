@@ -2,18 +2,8 @@
 
 namespace App\Routes;
 
-use App\Controllers\AlunoController;
-use App\Controllers\TurmaController;
 use App\Controllers\UsuarioController;
-use App\Daos\PlanoDao;
-use App\Libs\UuidClass;
-use App\Middlewares\JwtMiddleware;
 use App\Middlewares\TokenMiddleware;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Slim\App;
-use Slim\Exception\HttpNotFoundException;
-use Slim\Psr7\Response;
 use Slim\Routing\RouteCollectorProxy;
 
 class V1Route
