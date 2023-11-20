@@ -1,6 +1,5 @@
 <?php
 require dirname(__DIR__,1) . '/vendor/autoload.php';
-require dirname(__DIR__, 1) . '/config/config.php';
 
 use App\Routes\Route;
 use Slim\Psr7\Response;
