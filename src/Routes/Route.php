@@ -4,10 +4,9 @@ namespace App\Routes;
 
 use DI\Container;
 use DI\ContainerBuilder;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Psr\Log\LoggerInterface;
-use Slim\Exception\HttpNotFoundException;
 use Slim\Factory\AppFactory;
 use Slim\Psr7\Response;
 use Slim\Routing\RouteCollectorProxy;
@@ -19,34 +18,60 @@ class Route
 
     function __construct(){
 
-        $containerBuilder = new ContainerBuilder();
-        $container = $containerBuilder->build();
-        $container->set('upload_directory', __DIR__ . '/uploads');
+        try {
+            $containerBuilder = new ContainerBuilder();
+            $container = $containerBuilder->build();
+            $container->set('upload_directory', __DIR__ . '/uploads');
+
+        } catch (\Exception $e) {
+        }
         AppFactory::setContainer($container);
         $app = AppFactory::create();
         $app->addBodyParsingMiddleware();
         $app->addRoutingMiddleware();
 
-        $app->get('/', function (ServerRequestInterface $request, ResponseInterface $response, array $args) {
-            $data = ["ERROR" => true, "MESSAGE" => CONFIG_SITE['name'],];
-            $response->getBody()->write(json_encode($data));
-            $response->withHeader('Content-Type', 'application/json');
+        // MIDDLEWARE MANUTENÇÃO
+        $app->add(function (Request $request, RequestHandler $handler) {
+            $response = $handler->handle($request);
+            $existingContent = (string) $response->getBody();
+
+            if (CONFIG_MAINTENANCE){
+                $data = [
+                    "error" => true,
+                    "message" => "Serviço em manutenção",
+                ];
+                $response = new Response();
+                $response->getBody()->write( json_encode($data));
+                $response->withStatus(200)->withHeader('content-type', 'application/json');
+                return $response;
+            }
             return $response;
         });
 
+
+        // TELA INICIAL
+        $app->get('/', function (Request $request, Response $response, array $args) {
+            $data = ["ERROR" => false, "MESSAGE" => CONFIG_SITE['name'],];
+            $response->getBody()->write(json_encode($data,JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+            return $response->withStatus(200)->withHeader('Content-type', 'application/json');
+
+        });
+
+        // GRUPO
         $app->group('/v1' , function ( RouteCollectorProxy $group){
             new V1Route($group);
         });
 
+        // DISPLAY ERROR
         if (CONFIG_DISPLAY_ERROR_DETAILS)
             $errorMiddleware = $app->addErrorMiddleware(true, true, true);
         else
             $errorMiddleware = $app->addErrorMiddleware(false, false, false);
 
 
-
+        // ERROS
         $errorMiddleware->setDefaultErrorHandler(function (
-            ServerRequestInterface $request,
+            Request $request,
             Throwable $exception,
             bool $displayErrorDetails,
             bool $logErrors,
@@ -71,6 +96,7 @@ class Route
             return $response->withStatus(200)->withHeader('Content-type', 'application/json');
         });
 
+        // EXECUTA
         $app->run();
     }
 

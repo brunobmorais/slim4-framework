@@ -21,6 +21,5 @@ const CONFIG_DATA_LAYER = [
 ];
 
 const CONFIG_DISPLAY_ERROR_DETAILS = false;
-
 const CONFIG_URL = "https://api.dominio.com";
 

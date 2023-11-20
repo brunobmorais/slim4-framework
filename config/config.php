@@ -1,9 +1,8 @@
 <?php
-if (strpos($_SERVER['SERVER_NAME'],"localhost")){
+if (strpos($_SERVER['SERVER_NAME'],"localhost") || $_SERVER['SERVER_NAME'] == "localhost"){
     require_once(dirname(__DIR__,1).'/config/developerConfig.php');
 } else {
     require_once(dirname(__DIR__,1).'/config/productionConfig.php');
-
 }
 /*ALTERE ESSA VARIAVEL TODA VEZ QUE QUISER ATUALIZAR O CSS E JAVASCRIPT*/
 const CONFIG_VERSION_CODE = "1.0.0";
