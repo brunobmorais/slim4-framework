@@ -16,7 +16,9 @@ const CONFIG_SECURITY = [
 ];
 
 const CONFIG_SITE = [
-    "color-primary" => "#2AB164",
+    "color-primary" => "#035E96",
+    "color-primary-hover" => "#024670",
+    "color-secondary" => "#676767",
     "name" => "Nome curto site",
     "nameFull" => "Nome completo site",
     "email" => "meuemail@site.com",
