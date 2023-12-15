@@ -59,8 +59,8 @@ class Route
 
             if (CONFIG_MAINTENANCE){
                 $data = [
-                    "error" => true,
-                    "message" => "Serviço em manutenção",
+                    "ERROR" => true,
+                    "MESSAGE" => "Serviço em manutenção",
                 ];
                 $response = new Response();
                 $response->getBody()->write( json_encode($data));
